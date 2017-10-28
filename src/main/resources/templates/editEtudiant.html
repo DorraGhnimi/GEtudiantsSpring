@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>editEtudiant</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+
+<link rel="stylesheet" type="text/css" href="../static/css/myStyle.css"
+	th:href="@{/css/myStyle.css}" />
+
+<!-- th:href="@{/css/myStyle.css}"  ==> cad : il va checher ce fichier ds le ctx du projet -->
+
+
+<!-- DATA-Binding -->
+
+
+
+</head>
+<body>
+
+	<!-- <div th:include="/header :: header"></div> -->
+
+
+
+
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">GEtudiant</a>
+			</div>
+			<ul class="nav navbar-nav ">
+				<li th:class="active"><a th:href="@{index}">Home</a></li>
+				<li><a th:href="@{form}">ADD</a></li>
+
+			</ul>
+		</div>
+	</nav>
+
+
+	<div
+		class="container col-md-8 col-sm-8 col-xs-12 spacer col-md-offset-2 col-sm-offset-2">
+		<div class="panel panel-default ">
+			<div class="panel-heading">Edit Etudiant</div>
+			<div class="panel-body">
+				<form th:action="@{update}" method="post" th:object="${etudiant}"  enctype="multipart/form-data" >
+				
+				<!--  UPLOAD FILE  :
+				
+				
+					dans la balise form:  enctype="application/x-www-form-urlencoded" par defaut : 
+					donnees envoyeés dans le body de la requete sous forme (cle,valeur),
+					 pour envoyer de plus des files ( sous forme binaire ) on utilise  enctype="multipart/form-data"
+				
+				
+				==> meth1 : photo:String  :
+					il faut recuperer"cote serveur" le fichier envoyer par le formulaire 
+					et le sauvgarder dans un dossier (voir: controlleur note2)   ( le nom du photo (Strin) va etre sauvgarder dans la BD
+				===>meth2 : photo:Byte :
+						
+				
+				 -->
+								
+					<div class="form-group">
+						<label class="control-label">ID : </label> <input type="text"
+							th:field="*{id}" class="form-control"  /> <span
+							class="text-danger" th:errors="*{id}"></span>
+					</div>
+				
+					<div class="form-group">
+						<label class="control-label">Nom : </label> <input type="text"
+							th:field="*{nom}" class="form-control" /> <span
+							class="text-danger" th:errors="*{nom}"></span>
+					</div>
+					<div class="form-group">
+						<label class="control-label">dateNaissance : </label> <input
+							type="date" th:field="*{dateNaissance}" class="form-control" />
+						<span class="text-danger" th:errors="*{dateNaissance}"></span>
+					</div>
+					<div class="form-group">
+						<label class="control-label">email : </label> <input type="text"
+							th:field="*{email}" class="form-control" /> <span
+							class="text-danger" th:errors="*{email}"></span>
+					</div>
+					<div class="form-group">
+						<label class="control-label ">photo : </label> <input type="file" name="formPhoto" value="${etudiant.photo}"
+							 class="form-control" /> <span
+							class="text-danger" th:errors="*{photo}"></span>
+							<img class="img-circle" th:src="@{getPhoto(id=${etudiant.id})}"  width="120" height="120"/>
+													
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							<!-- note1
+								validation du formulaire : COTE SERVEUR
+								en fait : "import org.springframework.validation.BindingResult;" ==> teba3 Spring
+										  "th:errors" teba3 Thymeleaf : connait bien la collection des erreurs : BindingResult 
+						
+								==> j'envois les données au serveur
+									il les verifie
+									il me génére la vue  
+								=================>>>> Thymeleaf everybody !!  :3
+						 -->
+							
+							
+							
+							
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-default btn-lg spacer">Save</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

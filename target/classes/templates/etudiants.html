@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>etudiants</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" href="../static/css/myStyle.css"
+	th:href="@{/css/myStyle.css}" />
+<!-- th:href="@{/css/myStyle.css}"  ==> cad : il va checher ce fichier ds le ctx du projet -->
+
+
+
+</head>
+<body>
+	<!-- Thymeleaf utilise le xhtml<=>html  qui respect le xml, toutes les balises doivent etre fermee -->
+
+	<!-- whenever we wanna use Thymeleaf we just have to 
+			add "th" => th:action,th:value,th:href..  !!!  
+			${evaluation d'une expression ou variables}
+			@{}
+			
+			***************************
+			th:object="${}etudiant"  :donnees ds le formulaire concerne un obj "etudiant 
+										=>Data-Binding de Thymeleaf 
+			th:field="*{nom}" <=> th:field="${etudiant.nom}" <=> id=".." name=".." value=".."  : en 
+			
+			 : un champs de l'attribut etudiant
+			**************************
+			
+			
+			
+		-->
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">GEtudiant</a>
+			</div>
+			<ul class="nav navbar-nav ">
+				<li th:class="active"><a th:href="@{index}">Home</a></li>
+				<li><a th:href="@{form}">ADD</a></li>
+
+			</ul>
+		</div>
+	</nav>
+
+
+
+
+	<div class="container spacer">
+		<div class="panel panel-default ">
+			<div class="panel-heading">
+				<div class="container">
+					<form th:action="@{index}" method="get">
+						<div class="form-group">
+							<label class="control-label"> Mot Cle</label> <input type="text"
+								name="mc" th:value="${motCle}" />
+							<button type="submit" class="form-group">chercher</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="container spacer">
+					<table class="table table-striped ">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>NOM</th>
+								<th>Email</th>
+								<th>DATENAISSANCE</th>
+								<th>PHOTO</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- boucle, cherche un attribut(valeur) qui s'appelle "etudiants -->
+							<!-- thymeleaf: moteur d'actions, jusqu'ici actions: "text", "each" -->
+							<!-- Thymeleaf active le cache : quand il y a une vue generee il va la mettre ds le cache, ech ma3naha: "actualiser"-> rien  -_- -->
+							<!-- 1.redemarrer  -->
+							<!-- 2.ouuuu  aller a Application.properties et ajouter "spring.thymeleaf.cache=false"-->
+							<!-- 3.ouuuu ajouter : il desactive toutes les caches, il  faut faire atttt : en production on la met pas
+						<dependency>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-devtools</artifactId>
+							<scope>runtime</scope>
+					    </dependency>
+						-->
+
+
+							<!-- <tr th:each="etudiant:${etudiants}">-->
+							<tr th:each="etudiant:${pageEtudiants.content}">
+								<!-- je reçoix donc seulement une  page qui contient un nbr donné d'etudiants -->
+								<td th:text="${etudiant.id}"></td>
+								<td th:text="${etudiant.nom}"></td>
+								<td th:text="${etudiant.email}"></td>
+								<td th:text="${etudiant.dateNaissance}"></td>
+				 				
+								
+								<!-- <td th:text="${etudiant.photo}"></td> -->
+								<td>
+									<img class="img-circle" th:src="@{getPhoto(id=${etudiant.id})}"  width="100" height="100"/>
+								
+								</td>
+						
+								<td><a onclick="return confirm ('tfasa5ha !?')" th:href="@{delete(id=${etudiant.id})}">Delete</a></td>
+								<td><a  th:href="@{edit(id=${etudiant.id})}">Edit</a></td>
+								<td></td>
+						
+						
+						
+						
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="container">
+					<ul class="nav nav-pills">
+						<!-- "nav" enleve les puces "nav-pills" sur la mm ligne-->
+						<li th:each="page:${pages}"
+							th:class="${page==pageCourante}?active:''">
+							<!-- on ajooute "th:class" cad on applique la classe avec evaluation d'expression ou condition ...-->
+							<a th:text="${page}" th:href="@{index(page=${page})}"></a> <!-- "@{}" <=> context courant -->
+							<!--allez a index.html avec le param "page" met a page (page par defaut=0, voir controlleur)   -->
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
